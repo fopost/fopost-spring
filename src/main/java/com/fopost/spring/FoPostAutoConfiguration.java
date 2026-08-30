@@ -23,8 +23,13 @@ public class FoPostAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public FoPost foPost(FoPostProperties properties) {
+        String apiKey = properties.getApiKey();
+        if (apiKey == null || apiKey.isBlank()) {
+            throw new IllegalStateException(
+                    "fopost: fopost.api-key is present but blank — check the environment variable it reads");
+        }
         return FoPost.builder()
-                .apiKey(properties.getApiKey())
+                .apiKey(apiKey)
                 .baseUrl(properties.getBaseUrl())
                 .timeout(properties.getTimeout())
                 .maxRetries(properties.getMaxRetries())

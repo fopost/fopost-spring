@@ -19,8 +19,8 @@ import org.springframework.validation.annotation.Validated;
  *     path: /fopost/webhooks
  * }</pre>
  *
- * <p>A blank {@code api-key} fails the context at startup rather than at the first call, so a
- * missing environment variable shows up in the deploy instead of in production traffic.
+ * <p>Constraints are checked at startup, not at the first call, so a missing environment variable
+ * shows up in the deploy instead of in production traffic.
  */
 @ConfigurationProperties(prefix = FoPostProperties.PREFIX)
 @Validated
@@ -29,8 +29,12 @@ public class FoPostProperties {
     /** The configuration prefix, {@code fopost}. */
     public static final String PREFIX = "fopost";
 
-    /** API key from app.fopost.com/api-keys. Sent as the {@code X-API-Key} header. */
-    @NotBlank
+    /**
+     * API key from app.fopost.com/api-keys. Sent as the {@code X-API-Key} header.
+     *
+     * <p>Not a bean constraint, because an application may receive webhooks without ever calling
+     * the API. {@link FoPostAutoConfiguration} rejects a blank one when it builds the client.
+     */
     private String apiKey;
 
     /** API root. A host with no path gets the versioned API path appended for you. */
