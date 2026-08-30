@@ -1,1 +1,2 @@
 com.fopost.spring.FoPostAutoConfiguration
+com.fopost.spring.FoPostHealthAutoConfiguration
