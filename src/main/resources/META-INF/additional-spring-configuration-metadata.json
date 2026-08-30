@@ -1,0 +1,97 @@
+{
+  "groups": [
+    {
+      "name": "fopost",
+      "type": "com.fopost.spring.FoPostProperties",
+      "sourceType": "com.fopost.spring.FoPostProperties",
+      "description": "Settings for the FoPost API client and the inbound webhook endpoint."
+    },
+    {
+      "name": "fopost.webhook",
+      "type": "com.fopost.spring.FoPostProperties$Webhook",
+      "sourceType": "com.fopost.spring.FoPostProperties",
+      "sourceMethod": "getWebhook()",
+      "description": "The endpoint this application exposes for FoPost webhook deliveries."
+    }
+  ],
+  "properties": [
+    {
+      "name": "fopost.api-key",
+      "type": "java.lang.String",
+      "description": "API key from app.fopost.com/api-keys. Sent as the X-API-Key header. No FoPost bean is registered until this is set."
+    },
+    {
+      "name": "fopost.base-url",
+      "type": "java.lang.String",
+      "description": "API root. A host with no path gets the versioned API path appended for you.",
+      "defaultValue": "https://api.fopost.com"
+    },
+    {
+      "name": "fopost.timeout",
+      "type": "java.time.Duration",
+      "description": "How long a single request may take before it gives up.",
+      "defaultValue": "30s"
+    },
+    {
+      "name": "fopost.max-retries",
+      "type": "java.lang.Integer",
+      "description": "Total attempts for a rate limited request, so 3 means two retries.",
+      "defaultValue": 3
+    },
+    {
+      "name": "fopost.default-workspace-id",
+      "type": "java.lang.String",
+      "description": "Workspace your own code should fall back to when a caller does not name one. The starter never sends it for you."
+    },
+    {
+      "name": "fopost.webhook-secret",
+      "type": "java.lang.String",
+      "description": "Signing secret of the webhook endpoint, returned once by the create call. Required when fopost.webhook.enabled is true."
+    },
+    {
+      "name": "fopost.webhook.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to map a controller that receives FoPost webhook deliveries.",
+      "defaultValue": false
+    },
+    {
+      "name": "fopost.webhook.path",
+      "type": "java.lang.String",
+      "description": "Path the webhook controller is mapped to.",
+      "defaultValue": "/fopost/webhooks"
+    },
+    {
+      "name": "management.health.fopost.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to contribute a 'fopost' entry to the actuator health endpoint.",
+      "defaultValue": true
+    }
+  ],
+  "hints": [
+    {
+      "name": "fopost.api-key",
+      "providers": [
+        {
+          "name": "environment-variable"
+        }
+      ]
+    },
+    {
+      "name": "fopost.base-url",
+      "values": [
+        {
+          "value": "https://api.fopost.com",
+          "description": "The hosted FoPost API."
+        }
+      ]
+    },
+    {
+      "name": "fopost.webhook-secret",
+      "providers": [
+        {
+          "name": "environment-variable"
+        }
+      ]
+    }
+  ]
+}

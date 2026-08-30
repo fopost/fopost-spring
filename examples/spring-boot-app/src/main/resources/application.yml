@@ -1,0 +1,16 @@
+fopost:
+  api-key: ${FOPOST_API_KEY}
+  default-workspace-id: ${FOPOST_WORKSPACE_ID}
+  webhook-secret: ${FOPOST_WEBHOOK_SECRET}
+  webhook:
+    enabled: true
+    path: /fopost/webhooks
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
