@@ -30,7 +30,7 @@ public class FoPostProperties {
     public static final String PREFIX = "fopost";
 
     /**
-     * API key from app.fopost.com/api-keys. Sent as the {@code X-API-Key} header.
+     * API key from fopost.com/dashboard/api-keys. Sent as the {@code X-API-Key} header.
      *
      * <p>Not a bean constraint, because an application may receive webhooks without ever calling
      * the API. {@link FoPostAutoConfiguration} rejects a blank one when it builds the client.

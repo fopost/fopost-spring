@@ -53,7 +53,7 @@ Every key ships configuration metadata, so an IDE completes and documents them i
 
 | Property | Default | What it does |
 | --- | --- | --- |
-| `fopost.api-key` | none, required | API key from [app.fopost.com/api-keys](https://app.fopost.com/api-keys) |
+| `fopost.api-key` | none, required | API key from [fopost.com/dashboard/api-keys](https://fopost.com/dashboard/api-keys) |
 | `fopost.base-url` | `https://api.fopost.com` | API root |
 | `fopost.timeout` | `30s` | How long one request may take |
 | `fopost.max-retries` | `3` | Total attempts for a rate limited request |
