@@ -21,5 +21,5 @@ mvn spring-boot:run
 Point a webhook at `https://<your host>/fopost/webhooks` and keep the secret the create call
 returns — it is shown once.
 
-The example builds against `com.fopost:fopost-spring-boot-starter:0.1.0`. Until that is on Maven
-Central, run `mvn install` in the repository root first.
+The example builds against `com.fopost:fopost-spring-boot-starter:0.1.0`, which is on Maven
+Central.

@@ -87,9 +87,10 @@ parsed body reorders keys and the signature will not match. The comparison is
 
 ## Parent dependency
 
-**`com.fopost:fopost-java` is not on Maven Central yet.** `pom.xml` declares the normal released
-coordinate `com.fopost:fopost-java:0.2.0` — that is what ships — but nothing can resolve it, so
-both workflows build the parent from source into the local repository before running Maven:
+`com.fopost:fopost-java` is on Maven Central. `pom.xml` declares the released coordinate
+`com.fopost:fopost-java:0.2.0`, which resolves from Central, and `.github/workflows/release.yml`
+no longer builds the parent from source. `.github/workflows/ci.yml` still has the step
+"Install the parent SDK from source":
 
 ```yaml
 - name: Install the parent SDK from source
@@ -98,18 +99,14 @@ both workflows build the parent from source into the local repository before run
     mvn -B -q install -DskipTests -f "${RUNNER_TEMP}/fopost-java/pom.xml"
 ```
 
-Locally, the sibling checkout does the same job:
+It is a leftover and no longer needed now that the parent is published. Nothing in `pom.xml`
+depends on it.
+
+Locally, installing the sibling checkout is only needed to build against unreleased parent changes:
 
 ```bash
 mvn -q install -DskipTests -f ../fopost-java/pom.xml
 ```
-
-**This shim is deletable the moment `com.fopost:fopost-java:0.2.0` is on Central** — remove the
-step from `.github/workflows/ci.yml` and `.github/workflows/release.yml`, and drop the note from
-the README. Nothing in `pom.xml` changes.
-
-Until then, `release.yml` will fail at the publish step even with correct secrets: Central rejects
-a release whose declared dependency it cannot resolve. Publish `fopost-java` first.
 
 ## Commands
 
