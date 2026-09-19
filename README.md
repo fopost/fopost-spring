@@ -102,8 +102,8 @@ Declare your own `FoPost` bean and the starter backs off, so an unusual setup â€
 a proxy, one client per tenant â€” needs no fighting with the auto-configuration.
 
 The full resource surface (`posts`, `accounts`, `workspaces`, `labels`, `webhooks`, `analytics`,
-`automations`, `media`, `ai`), pagination, error types, and the `request` escape hatch are
-documented in [fopost-java](https://github.com/fopost/fopost-java).
+`automations`, `media`, `ai`, `inbox`, `ads`), pagination, error types, and the `request` escape
+hatch are documented in [fopost-java](https://github.com/fopost/fopost-java).
 
 ## Receiving webhooks
 
