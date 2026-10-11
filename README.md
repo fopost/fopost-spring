@@ -46,6 +46,9 @@ fopost:
   webhook:
     enabled: false # default
     path: /fopost/webhooks # default
+  blog:
+    website-secret: ${FOPOST_WEBSITE_SECRET} # required only when receiving blog articles
+    webhook-path: /fopost/articles # default
 ```
 
 Every key ships configuration metadata, so an IDE completes and documents them in
@@ -61,6 +64,8 @@ Every key ships configuration metadata, so an IDE completes and documents them i
 | `fopost.webhook-secret` | none | Signing secret for inbound deliveries |
 | `fopost.webhook.enabled` | `false` | Map the webhook controller |
 | `fopost.webhook.path` | `/fopost/webhooks` | Where it listens |
+| `fopost.blog.website-secret` | none | Signing secret of the website target; maps the article receiver |
+| `fopost.blog.webhook-path` | `/fopost/articles` | Where the article receiver listens |
 | `management.health.fopost.enabled` | `true` | Contribute the actuator health entry |
 
 A blank `fopost.api-key` — usually an environment variable that never got set — fails the context
@@ -102,7 +107,7 @@ Declare your own `FoPost` bean and the starter backs off, so an unusual setup �
 a proxy, one client per tenant — needs no fighting with the auto-configuration.
 
 The full resource surface (`posts`, `accounts`, `workspaces`, `labels`, `webhooks`, `analytics`,
-`automations`, `media`, `ai`), pagination, error types, and the `request` escape hatch are
+`automations`, `media`, `ai`, `blog`), pagination, error types, and the `request` escape hatch are
 documented in [fopost-java](https://github.com/fopost/fopost-java).
 
 ## Receiving webhooks
@@ -160,6 +165,46 @@ idempotent.
 
 If your application uses Spring Security, permit the webhook path: FoPost signs its deliveries but
 does not carry a session or a bearer token.
+
+## Receive blog articles
+
+A post goes to a social network; an article goes to a website. When a workspace's blog target is
+your own website, FoPost delivers each published article to it as a signed webhook. Set the
+website secret the dashboard showed once and the receiver is mapped:
+
+```yaml
+fopost:
+  blog:
+    website-secret: ${FOPOST_WEBSITE_SECRET}
+    webhook-path: /fopost/articles # default
+```
+
+The receiver verifies the raw body through the parent SDK's `WebhookVerifier`, answers 401 for a
+signature the secret did not produce or a timestamp older than 300 seconds, acknowledges
+`article.test` with `{"ok": true}`, and hands `article.published` to your handler as a typed
+`BlogArticlePublished`. Return the URL the article now lives at and the receiver echoes it as
+`{"url": "..."}`; return `null` to answer `{"ok": true}`.
+
+```java
+@Bean
+ArticlePublishedHandler articlePublishedHandler(ArticleStore store) {
+    return article -> store.save(article.slug(), article.title(), article.bodyHtml()).publicUrl();
+}
+```
+
+The same delivery is also published as a `FoPostArticlePublishedEvent`, so an `@EventListener`
+works instead of, or alongside, the handler:
+
+```java
+@EventListener
+void onArticlePublished(FoPostArticlePublishedEvent event) {
+    log.info("article {} is live at {}", event.getArticle().slug(), event.getArticle().publishedUrl());
+}
+```
+
+Image URLs in the payload are fetchable for six hours; download and store your own copy. The
+receiver is independent of `fopost.webhook.enabled` and of the API key, and the `blog()` resource
+itself (keywords, articles, settings) is on the injected `FoPost` client as `fopost.blog()`.
 
 ## Health
 
