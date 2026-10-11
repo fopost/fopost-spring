@@ -27,7 +27,7 @@ jobs:
       # published — the dependency in pom.xml already names the released coordinate.
       - name: Install the parent SDK from source
         run: |
-          git clone --depth 1 https://github.com/fopost/fopost-java.git "${RUNNER_TEMP}/fopost-java"
+          git clone --depth 1 --branch feature/blog-articles https://github.com/fopost/fopost-java.git "${RUNNER_TEMP}/fopost-java"
           mvn -B -q install -DskipTests -f "${RUNNER_TEMP}/fopost-java/pom.xml"
 
       - run: mvn -B verify
