@@ -1,3 +1,4 @@
 com.fopost.spring.FoPostAutoConfiguration
 com.fopost.spring.FoPostHealthAutoConfiguration
 com.fopost.spring.webhook.FoPostWebhookAutoConfiguration
+com.fopost.spring.blog.FoPostBlogAutoConfiguration

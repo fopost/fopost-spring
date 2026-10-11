@@ -17,6 +17,9 @@ import org.springframework.validation.annotation.Validated;
  *   webhook:
  *     enabled: true
  *     path: /fopost/webhooks
+ *   blog:
+ *     website-secret: ${FOPOST_WEBSITE_SECRET}
+ *     webhook-path: /fopost/articles
  * }</pre>
  *
  * <p>Constraints are checked at startup, not at the first call, so a missing environment variable
@@ -61,6 +64,8 @@ public class FoPostProperties {
     private String webhookSecret;
 
     private final Webhook webhook = new Webhook();
+
+    private final Blog blog = new Blog();
 
     public String getApiKey() {
         return apiKey;
@@ -114,6 +119,10 @@ public class FoPostProperties {
         return webhook;
     }
 
+    public Blog getBlog() {
+        return blog;
+    }
+
     /** The inbound webhook endpoint this application exposes to FoPost. */
     public static class Webhook {
 
@@ -138,6 +147,36 @@ public class FoPostProperties {
 
         public void setPath(String path) {
             this.path = path;
+        }
+    }
+
+    /** The endpoint a FoPost website target publishes articles to. */
+    public static class Blog {
+
+        /**
+         * Signing secret of the website target, issued once when the website URL is set. The
+         * article receiver is mapped only when this is present.
+         */
+        private String websiteSecret;
+
+        /** Path the article receiver is mapped to. */
+        @NotBlank
+        private String webhookPath = FoPostBlogDefaults.PATH;
+
+        public String getWebsiteSecret() {
+            return websiteSecret;
+        }
+
+        public void setWebsiteSecret(String websiteSecret) {
+            this.websiteSecret = websiteSecret;
+        }
+
+        public String getWebhookPath() {
+            return webhookPath;
+        }
+
+        public void setWebhookPath(String webhookPath) {
+            this.webhookPath = webhookPath;
         }
     }
 }
