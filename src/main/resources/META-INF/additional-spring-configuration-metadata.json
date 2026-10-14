@@ -12,6 +12,13 @@
       "sourceType": "com.fopost.spring.FoPostProperties",
       "sourceMethod": "getWebhook()",
       "description": "The endpoint this application exposes for FoPost webhook deliveries."
+    },
+    {
+      "name": "fopost.blog",
+      "type": "com.fopost.spring.FoPostProperties$Blog",
+      "sourceType": "com.fopost.spring.FoPostProperties",
+      "sourceMethod": "getBlog()",
+      "description": "The endpoint a FoPost website target publishes articles to."
     }
   ],
   "properties": [
@@ -61,6 +68,17 @@
       "defaultValue": "/fopost/webhooks"
     },
     {
+      "name": "fopost.blog.website-secret",
+      "type": "java.lang.String",
+      "description": "Signing secret of the website target, issued once when the website URL is set. The article receiver is mapped only when this is present."
+    },
+    {
+      "name": "fopost.blog.webhook-path",
+      "type": "java.lang.String",
+      "description": "Path the article receiver is mapped to.",
+      "defaultValue": "/fopost/articles"
+    },
+    {
       "name": "management.health.fopost.enabled",
       "type": "java.lang.Boolean",
       "description": "Whether to contribute a 'fopost' entry to the actuator health endpoint.",
@@ -87,6 +105,14 @@
     },
     {
       "name": "fopost.webhook-secret",
+      "providers": [
+        {
+          "name": "environment-variable"
+        }
+      ]
+    },
+    {
+      "name": "fopost.blog.website-secret",
       "providers": [
         {
           "name": "environment-variable"
