@@ -232,8 +232,8 @@ Issues and pull requests are welcome at
 mvn verify
 ```
 
-Tests run against stub transports and a MockMvc request; nothing touches the network. Until
-`com.fopost:fopost-java` is on Maven Central, install it from source first — see `CLAUDE.md`.
+Tests run against stub transports and a MockMvc request; nothing touches the network.
+`com.fopost:fopost-java` 0.3.0 resolves from Maven Central, so no local install is needed.
 
 ## License
 
