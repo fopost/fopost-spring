@@ -46,8 +46,6 @@ jobs:
 
       - run: mvn -B verify
 
-      # Central rejects a release whose parent dependency it cannot resolve, so this
-      # must not run until fopost-java is published.
       - name: Publish to Maven Central
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
         run: mvn -B -Prelease deploy -DskipTests

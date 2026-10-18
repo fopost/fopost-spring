@@ -87,34 +87,13 @@ parsed body reorders keys and the signature will not match. The comparison is
 
 ## Parent dependency
 
-**`com.fopost:fopost-java` is not on Maven Central yet.** `pom.xml` declares the normal released
-coordinate `com.fopost:fopost-java:0.3.0` — that is what ships — but nothing can resolve it, so
-both workflows build the parent from source into the local repository before running Maven:
-
-```yaml
-- name: Install the parent SDK from source
-  run: |
-    git clone --depth 1 https://github.com/fopost/fopost-java.git "${RUNNER_TEMP}/fopost-java"
-    mvn -B -q install -DskipTests -f "${RUNNER_TEMP}/fopost-java/pom.xml"
-```
-
-Locally, the sibling checkout does the same job:
-
-```bash
-mvn -q install -DskipTests -f ../fopost-java/pom.xml
-```
-
-**This shim is deletable the moment `com.fopost:fopost-java:0.3.0` is on Central** — remove the
-step from `.github/workflows/ci.yml` and `.github/workflows/release.yml`, and drop the note from
-the README. Nothing in `pom.xml` changes.
-
-Until then, `release.yml` will fail at the publish step even with correct secrets: Central rejects
-a release whose declared dependency it cannot resolve. Publish `fopost-java` first.
+`pom.xml` pins `com.fopost:fopost-java:0.3.0`, which resolves from Maven Central. Both workflows
+run plain `mvn -B verify` against it; nothing is built from source. Bumping the parent is a change
+to `<fopost-java.version>` and nothing else.
 
 ## Commands
 
 ```bash
-mvn -q install -DskipTests -f ../fopost-java/pom.xml   # once, until the parent is on Central
 mvn verify                                             # compile, test, sources jar, javadoc jar
 mvn -B test
 mvn test -Dtest=FoPostWebhookControllerTests
