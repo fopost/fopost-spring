@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 - 2026-10-18
 
 - Receive blog articles: an article receiver mapped at `fopost.blog.webhook-path` whenever
   `fopost.blog.website-secret` is set. It verifies each delivery through the parent SDK, answers

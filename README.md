@@ -19,12 +19,12 @@ Requires Java 17 and Spring Boot 3.
 <dependency>
   <groupId>com.fopost</groupId>
   <artifactId>fopost-spring-boot-starter</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
 ```kotlin
-implementation("com.fopost:fopost-spring-boot-starter:0.1.0")
+implementation("com.fopost:fopost-spring-boot-starter:0.2.0")
 ```
 
 > **0.x release.** The public API is still settling and minor versions may contain breaking
